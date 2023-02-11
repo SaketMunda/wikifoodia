@@ -33,3 +33,12 @@ Name one important benefit of mixed precision training, how does this benefit ta
 - [ ] Read up on learning rate scheduling and the [learning rate scheduler callback](https://www.tensorflow.org/api_docs/python/tf/keras/callbacks/LearningRateScheduler). What is it? And how might it be helpful to this project?
 - [ ] Read up on TensorFlow data loaders ([improving TensorFlow data loading performance](https://www.tensorflow.org/guide/data_performance)). Is there anything we've missed? What methods you keep in mind whenever loading data in TensorFlow? Hint: check the summary at the bottom of the page for a great round up of ideas.
 - [ ] Read up on the documentation for [TensorFlow mixed precision training](https://www.tensorflow.org/guide/mixed_precision). What are the important things to keep in mind when using mixed precision training?
+
+
+## TensorFlow Serving
+
+Docker Command :
+
+```
+docker run -p 8501:8501 --name tfserving_foodia --mount type=bind,source=/Users/starlord/Desktop/Work/Learn/DataScience/food-vision-101/server/model/efficientnetb0_dropout_fine_tuned/,target=/models/foodia -e MODEL_NAME=foodia -t tensorflow/serving
+```
