@@ -6,7 +6,7 @@ import { UploadImage, MakePrediction } from '../components';
 
 export default function Home() {
 
-  const [predictions, setPredictions] = useState(false);
+  const [predictions, setPredictions] = useState({labels:[], probs:[]});
 
   return (
     <div className='bg-primary-black'>      

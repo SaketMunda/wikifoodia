@@ -3,16 +3,23 @@
 import { Bar } from "react-chartjs-2";
 import { Chart } from "chart.js/auto";
 
-const MakePrediction = ({predictions}) => {
+const MakePrediction = ({predictions}) => {    
     
-    // assign predicted labels here
-    const labels = ['January', 'February', 'March', 'April', 'May']; 
+    // default predictions
+    let labels = ['grilled_salmon', 'omelette', 'garlic_bread', 'pizza', 'lasagna'];    
+    let probs =  [80.96, 11.7, 2.45, 2.29, 1.71];   
+
+    if (predictions.labels.length > 0)
+    {
+        labels = predictions.labels;
+        probs = predictions.probs;
+    }
 
     const data = {
         labels: labels,
         datasets: [{
-            label: 'Prediction Probabilities',
-            data: [65, 59, 80.56, 81, 56], // prediction probabilities
+            label: 'Highest Prediction',
+            data: probs, // prediction probabilities
             backgroundColor: [
             'rgba(54, 162, 235, 0.2)', // cyan            
             'rgba(153, 102, 255, 0.2)', // purple           
@@ -28,17 +35,13 @@ const MakePrediction = ({predictions}) => {
             'rgb(255, 99, 132)', // red            
             ],
             borderWidth: 1
-    }]};
+    }]};  
 
     return (
         <div>            
-            <span>
-                {
-                    predictions? "Predicted":"Not Predicted"
-                }
-            </span>
+            <span>Foodia predicted it's <b>{labels[0]}</b></span>
             <Bar 
-                data = {data} 
+                data = {data}
                 options= {{
                     scales: {
                         y : {

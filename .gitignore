@@ -315,6 +315,7 @@ node_modules
 *.sublime*
 
 /server/*.json
+/server/images_for_prediction/*
 
 psd
 thumb

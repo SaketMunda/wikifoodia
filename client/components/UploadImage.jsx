@@ -38,17 +38,33 @@ const UploadImage = ({setPredictions}) => {
 
         const formData = new FormData();
 
-        formData.append('file', fileInput);
+        for (const file of fileInput.files) {
+            formData.append('file', file);
+        }            
 
         // write here the logic for calling the food vision api to make prediction
-        const response = await fetch('http://127.0.0.1/', {
+        const alive_endpoint = process.env.NEXT_PUBLIC_HOST + '/alive'; // endpoint to check if server is up
+
+        const predict_endpoint = process.env.NEXT_PUBLIC_HOST + '/predict'; // endpoint to predict
+
+        const response = await fetch(predict_endpoint, {
             method: 'POST',
             body: formData
         }).then(r=> r.json());
 
-        console.log(response);
+        //console.log(response);
 
-        setPredictions(true);
+        let responsePredictions = {};
+
+        if (response.status_code==200){
+            responsePredictions = {labels:response.labels, probs:response.probs};
+            setPredictions(predictions=> (
+                {
+                    ...predictions,
+                    ...responsePredictions
+                }
+            ));
+        }        
 
         // After prediction make this empty
         setUploadFile();

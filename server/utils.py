@@ -1,5 +1,3 @@
-from googleapiclient import discovery
-from google.api_core.client_options import ClientOptions
 import tensorflow as tf
 
 class_names = [
@@ -106,10 +104,11 @@ class_names = [
     'waffles',
 ]
 
+model = tf.keras.models.load_model('models/efficientnetb0_dropout_fine_tuned')
 
-def load_and_prep_image(filename):
+def load_and_prep_image(file):
     # read the image
-    raw = tf.io.read_file(filename)
+    raw = tf.io.read_file(file)
 
     # decode the image
     img = tf.io.decode_image(raw, channels=3)
@@ -117,53 +116,18 @@ def load_and_prep_image(filename):
     # resize the image
     img = tf.image.resize(img, [224, 224])
 
-    return tf.cast(tf.expand_dims(img, axis=0), tf.int16)
+    return tf.cast(tf.expand_dims(img, axis=0), tf.float16)
 
-def predict_json(project, project_id, region, model, instances, version="v0001"):
-    """
-    Send json data to a deployed model for prediction
+def make_prediction(img, model=model):
 
-    Args:
-        instances ([Mapping[str:Any]]): Keys should be the names of Tensors
-        your deployed model expects as inputs. Values should be datatypes
-        convertible to Tensors, or (potentially nested) lists of datatypes
-        convertible to Tensors.
-        version (str): version of the model to target
+    pred_prob = model.predict(img)    
+    top_5_pred = (pred_prob.argsort())[0][-5:][::-1]    
+    labels = []    
+    probs = []
 
-    Return:
-        dictionary of prediction results defined by the model
-    """
+    for x in range(5):
+        label = str(class_names[top_5_pred[x]]).replace('[\'',"").replace('\']',"")
+        labels.append(label)        
+        probs.append(float(f'{(pred_prob[0][top_5_pred[x]])*100:.2f}'))
     
-    # Create the ML Engine service object        
-    endpoint = "https://{}-ml.googleapis.com".format(region)
-    client_options = ClientOptions(api_endpoint=endpoint) 
-    ml = discovery.build("ml", "v1", client_options=client_options) 
-
-    instances_list = instances.numpy().tolist() # turn input into list (ML Engine wants JSON)
-
-    request_body = {"instances": instances_list}
-
-    # Setup the model path
-    model_path = "projects/{}/models/{}".format(project_id, model)
-    if version is not None:
-        model_path += "/versions/{}".format(version)
-
-    request = ml.projects().predict(name=model_path, body=request_body)
-    response = request.execute()
-    
-    # # ALT: Create model api
-    # model_api = api_endpoint + model_path + ":predict"
-    # headers = {"Authorization": "Bearer " + token}
-    # response = requests.post(model_api, json=input_data_json, headers=headers)
-
-    # response = service.projects().predict(
-    #     name=model_path,
-    #     body={'instances':instances_list}
-    # ).execute()  
-   
-
-    if "error" in response:
-        raise RuntimeError(response["error"])
-    
-    return response["predictions"]
-
+    return labels, probs
