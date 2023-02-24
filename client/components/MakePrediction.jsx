@@ -18,7 +18,7 @@ const MakePrediction = ({predictions}) => {
     const data = {
         labels: labels,
         datasets: [{
-            label: 'Highest Prediction',
+            label: 'Highest Probability',
             data: probs, // prediction probabilities
             backgroundColor: [
             'rgba(54, 162, 235, 0.2)', // cyan            
@@ -38,8 +38,7 @@ const MakePrediction = ({predictions}) => {
     }]};  
 
     return (
-        <div>            
-            <span>Foodia predicted it's <b>{labels[0]}</b></span>
+        <div>                        
             <Bar 
                 data = {data}
                 options= {{
@@ -49,6 +48,9 @@ const MakePrediction = ({predictions}) => {
                         }
                     }
                 }}/>
+            <div className="flex justify-center items-center mt-5 h-12 p-2">
+                <span>Foodia's Prediction : <span className="bg-clip-text text-transparent bg-gradient-to-r from-yellow-500 to-amber-500 cursor-pointer font-bold">{labels[0]}</span></span>
+            </div>            
         </div>)
 };
 

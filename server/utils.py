@@ -1,4 +1,5 @@
 import tensorflow as tf
+import os
 
 class_names = [
     'apple_pie',
@@ -131,3 +132,15 @@ def make_prediction(img, model=model):
         probs.append(float(f'{(pred_prob[0][top_5_pred[x]])*100:.2f}'))
     
     return labels, probs
+
+def save_image_for_prediction(file, img_path):
+
+    img_bytes = file.read()        
+    with open(img_path, 'wb') as f:
+        f.write(img_bytes)
+        f.close()         
+
+def del_image_after_prediction(img_path):
+    # delete the file after prediction
+    if os.path.isfile(img_path):
+        os.remove(img_path)

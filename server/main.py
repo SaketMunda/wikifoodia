@@ -1,6 +1,7 @@
 from flask import  Flask, jsonify,request
 from flask_cors import CORS, cross_origin
-from utils import load_and_prep_image, make_prediction
+from utils import load_and_prep_image, make_prediction, save_image_for_prediction, del_image_after_prediction
+import uuid
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -21,18 +22,26 @@ def home():
     if 'file' not in request.files:
         return jsonify(message="Please upload an Image", status_code=500)
     
-    file = request.files.get('file')
-    img_bytes = file.read()
-    img_path = path + 'test.jpg'
-    with open(img_path, 'wb') as f:
-        f.write(img_bytes)
-        f.close()         
+    # create the filename
+    img_name = f'{str(uuid.uuid4())}.jpg'
+    img_path = path + img_name
+    try:
+        # save the file before prediction        
+        file = request.files.get('file')
+        save_image_for_prediction(file, img_path)
 
-    img = load_and_prep_image(img_path)         
-    # local prediction
-    labels, pred_probs = make_prediction(img)          
+        # preprocess the image
+        img = load_and_prep_image(img_path)         
+        # make prediction
+        labels, pred_probs = make_prediction(img)                
 
-    return jsonify(labels=labels, probs=pred_probs, status_code=200)
+        return jsonify(labels=labels, probs=pred_probs, status_code=200)
+    except:
+        return jsonify(message="Exception occured", status_code=500)
+    finally:
+        # delete the file after prediction
+        del_image_after_prediction(img_path) 
+
 
         
 if __name__ == '__main__':
