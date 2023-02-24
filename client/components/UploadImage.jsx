@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 
-const UploadImage = ({setPredictions}) => {
+const UploadImage = ({setPredictions, setLoading}) => {
 
     const defaultImgUrl = "/grilled-salmon.jpeg";
     const [imageSrc, setImageSrc] = useState();
-    const [uploadFile, setUploadFile] = useState();
+    const [uploadFile, setUploadFile] = useState();    
 
     /**
      * handleOnChange
@@ -32,6 +32,7 @@ const UploadImage = ({setPredictions}) => {
 
     async function handleOnSubmit(event) {
         event.preventDefault();
+        setLoading(true);
 
         const form = event.currentTarget;
         const fileInput = Array.from(form.elements).find(({ name }) => name === 'file');
@@ -45,7 +46,7 @@ const UploadImage = ({setPredictions}) => {
         // write here the logic for calling the food vision api to make prediction
         const alive_endpoint = process.env.NEXT_PUBLIC_HOST + '/alive'; // endpoint to check if server is up
 
-        const predict_endpoint = process.env.NEXT_PUBLIC_HOST + '/predict'; // endpoint to predict
+        const predict_endpoint = process.env.NEXT_PUBLIC_HOST + '/predict'; // endpoint to predict        
 
         const response = await fetch(predict_endpoint, {
             method: 'POST',
@@ -66,7 +67,8 @@ const UploadImage = ({setPredictions}) => {
             ));
         }        
 
-        // After prediction make this empty
+        // After prediction make this empty        
+        setLoading(false);
         setUploadFile();
     }
 

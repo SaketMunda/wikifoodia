@@ -6,6 +6,7 @@ import { UploadImage, MakePrediction } from '../components';
 
 export default function Home() {
 
+  const [isLoading, setLoading] = useState(false);
   const [predictions, setPredictions] = useState({labels:[], probs:[]});
 
   return (
@@ -24,10 +25,10 @@ export default function Home() {
               <p className="basis-1/4">Accuracy is<span className="px-1 rounded-md bg-gray-700 mx-1">80%</span>after fine-tuning.</p>                            
             </div>
             <div className='p-8 max-w-full bg-gray-800 rounded-xl shadow-lg col-span-2 items-center flex justify-center align-middle'>                           
-              <UploadImage setPredictions={setPredictions}/>
+              <UploadImage setPredictions={setPredictions} setLoading={setLoading}/>
             </div>       
             <div className='p-8 max-w-full bg-gray-800 rounded-xl shadow-lg col-span-2'>
-              <MakePrediction predictions={predictions}/>                   
+              <MakePrediction predictions={predictions} isLoading={isLoading}/>                   
             </div>              
           </div>  
           <div id='footer' className="flex justify-center pt-8 items-end basis-1/12">

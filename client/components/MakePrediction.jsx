@@ -3,7 +3,7 @@
 import { Bar } from "react-chartjs-2";
 import { Chart } from "chart.js/auto";
 
-const MakePrediction = ({predictions}) => {    
+const MakePrediction = ({predictions, isLoading}) => {    
     
     // default predictions
     let labels = ['grilled_salmon', 'omelette', 'garlic_bread', 'pizza', 'lasagna'];    
@@ -37,21 +37,29 @@ const MakePrediction = ({predictions}) => {
             borderWidth: 1
     }]};  
 
-    return (
-        <div>                        
-            <Bar 
-                data = {data}
-                options= {{
-                    scales: {
-                        y : {
-                            beginAtZero: true
+    if (isLoading) 
+    {
+        return <div className="flex justify-center items-center"><svg className="animate-spin h-10 w-10" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+        <path fillRule="evenodd" d="M4.755 10.059a7.5 7.5 0 0112.548-3.364l1.903 1.903h-3.183a.75.75 0 100 1.5h4.992a.75.75 0 00.75-.75V4.356a.75.75 0 00-1.5 0v3.18l-1.9-1.9A9 9 0 003.306 9.67a.75.75 0 101.45.388zm15.408 3.352a.75.75 0 00-.919.53 7.5 7.5 0 01-12.548 3.364l-1.902-1.903h3.183a.75.75 0 000-1.5H2.984a.75.75 0 00-.75.75v4.992a.75.75 0 001.5 0v-3.18l1.9 1.9a9 9 0 0015.059-4.035.75.75 0 00-.53-.918z" clipRule="evenodd" />
+      </svg></div>
+    }
+    else {
+        return (
+            <div>              
+                <Bar 
+                    data = {data}
+                    options= {{
+                        scales: {
+                            y : {
+                                beginAtZero: true
+                            }
                         }
-                    }
-                }}/>
-            <div className="flex justify-center items-center mt-5 h-12 p-2">
-                <span>Foodia's Prediction : <span className="bg-clip-text text-transparent bg-gradient-to-r from-yellow-500 to-amber-500 cursor-pointer font-bold">{labels[0]}</span></span>
-            </div>            
-        </div>)
+                    }}/>
+                <div className="flex justify-center items-center mt-5 h-12 p-2">
+                    <span>Foodia's Prediction : <span className="bg-clip-text text-transparent bg-gradient-to-r from-yellow-500 to-amber-500 cursor-pointer font-bold">{labels[0]}</span></span>
+                </div>            
+            </div>)
+    }    
 };
 
 export default MakePrediction;
