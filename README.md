@@ -40,15 +40,15 @@ NEXT_PUBLIC_HOST=http://$HOSTNAME:$PORT
 
 Create `env` virtual environment inside `server` directory using,
 
-> python3 -m venv env
+```python3 -m venv env```
 
 Activate the environment
 
-> source env/bin/activate
+```source env/bin/activate```
 
 Install the dependencies
 
-> pip install -r requirements.txt
+```pip install -r requirements.txt```
 
 ### Run the Project
 
@@ -56,11 +56,11 @@ We have to run both the projects separately, order of execution doesn't matter.
 
 Inside `client` directory
 
-> npm run dev
+```npm run dev```
 
 Inside `server` directory after activating the `env`
 
-> python3 main.py
+```python3 main.py```
 
 ## Foodia's Goal (About the model)
 
