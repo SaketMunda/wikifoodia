@@ -73,27 +73,30 @@ const UploadImage = ({setPredictions, setLoading}) => {
     }
 
 
-    return (
-        <form method="post" onChange={handleOnChange} onSubmit={handleOnSubmit}>                        
-            {
-                <img src={!imageSrc? defaultImgUrl : imageSrc} className="rounded-lg object-fit w-auto h-4/5"/>           
-            }            
-            <div className="mt-4 flex max-h-10 justify-start items-center">                
-                <p>
-                    <input 
-                        type="file" 
-                        name="file" 
-                        className="block w-full text-md text-white file:mr-2 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-cyan-600 file:text-white hover:file:bg-cyan-800"/>
-                </p>                
-            </div>
-            <div className="flex max-h-12 justify-center items-end mt-4">
-            {imageSrc && !uploadFile && (
-                <p>
+    return (                            
+            <section className="xl:col-span-2 p-8 sm:w-full bg-gray-800 rounded-xl shadow-lg flex flex-col justify-center gap-2 xl:h-[70vh]">            
+                <form method="post" onChange={handleOnChange} onSubmit={handleOnSubmit}>    
+                <div className="flex justify-center items-start h-[50vh]">
+                {
+                    <img src={!imageSrc? defaultImgUrl : imageSrc} className="rounded-lg w-auto h-full object-fit"/>           
+                }
+                </div>            
+                <div className="max-h-10 mt-5">
+                    <p>
+                        <input 
+                            type="file" 
+                            name="file" 
+                            className="block w-full text-md text-white file:mr-2 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-cyan-600 file:text-white hover:file:bg-cyan-800"/>
+                    </p>                                    
+                </div>
+                <div className="flex max-h-12 justify-center items-center">
+                {imageSrc && !uploadFile && (
                     <button className="text-lg w-32 h-12 bg-clip-button bg-gradient-to-r from-cyan-500 to-blue-500 rounded-md text-white font-semibold">Predict 🪄</button>
-                </p>
-            )}
-            </div>
-        </form>        
+                )}
+                </div>
+                </form> 
+            </section>       
+                        
     )    
 };
 

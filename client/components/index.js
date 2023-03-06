@@ -1,7 +1,11 @@
+import Hero from './Hero';
+import About from './About';
 import UploadImage from './UploadImage';
-import MakePrediction from './MakePrediction';
+import Prediction from './Prediction';
 
 export {
-    UploadImage,
-    MakePrediction
+    Hero,
+    About,
+    UploadImage,  
+    Prediction
 };

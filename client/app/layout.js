@@ -7,7 +7,7 @@ export default function RootLayout({ children }) {
         <link rel="preconnect" href="https://stijndv.com" />
         <link rel="stylesheet" href="https://stijndv.com/fonts/Eudoxus-Sans.css" />     
       </head>      
-      <body>{children}</body>
+      <body className="2xl:overflow-hidden xl:overflow-hidden overflow-x-hidden bg-primary-black text-white">{children}</body>
     </html>
   )
 }
