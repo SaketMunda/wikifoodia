@@ -74,8 +74,10 @@ const UploadImage = ({setPredictions, setLoading, setHistory, setHistoryLoading,
             setHistoryLoading(true);       
             setRecipeLoading(true);
 
+            const detail_endpoint = process.env.NEXT_PUBLIC_HOST + '/detail'; // endpoint to predict        
+
             // Make call for History
-            const historyRes = await fetch('/api/detail', {
+            const historyRes = await fetch(detail_endpoint, {
                 method:'POST',
                 body: JSON.stringify({                    
                     label: response.labels[0],
@@ -90,14 +92,14 @@ const UploadImage = ({setPredictions, setLoading, setHistory, setHistoryLoading,
                 setHistory('Unfortunately OpenAI APIs are not responding. Try again later!')
             }
             else {                                  
-                setHistory(historyRes.result.content) 
+                setHistory(historyRes.text.content) 
             }
         
             // set loading false
             setHistoryLoading(false);        
 
             // // Make call for Recipe
-            const recipeRes = await fetch('/api/detail', {
+            const recipeRes = await fetch(detail_endpoint, {
                 method:'POST',
                 body: JSON.stringify({                  
                     label: response.labels[0],
@@ -112,7 +114,7 @@ const UploadImage = ({setPredictions, setLoading, setHistory, setHistoryLoading,
                 setRecipe('Unfortunately OpenAI APIs are not responding. Try again later!')
             }
             else {            
-                setRecipe(recipeRes.result.content) 
+                setRecipe(recipeRes.text.content) 
             }
 
             setRecipeLoading(false);
