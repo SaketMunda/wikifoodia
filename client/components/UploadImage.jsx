@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-const UploadImage = ({setPredictions, setLoading}) => {
+const UploadImage = ({setPredictions, setLoading, setHistory, setHistoryLoading, setRecipe, setRecipeLoading}) => {
 
     const defaultImgUrl = "/grilled-salmon.jpeg";
     const [imageSrc, setImageSrc] = useState();
@@ -32,6 +32,7 @@ const UploadImage = ({setPredictions, setLoading}) => {
 
     async function handleOnSubmit(event) {
         event.preventDefault();
+        // set loaders for prediction
         setLoading(true);
 
         const form = event.currentTarget;
@@ -65,16 +66,65 @@ const UploadImage = ({setPredictions, setLoading}) => {
                     ...responsePredictions
                 }
             ));
-        }        
 
-        // After prediction make this empty        
-        setLoading(false);
+            // After prediction make this empty        
+            setLoading(false);
+
+            // set history and recipe loading true
+            setHistoryLoading(true);       
+            setRecipeLoading(true);
+
+            // Make call for History
+            const historyRes = await fetch('/api/detail', {
+                method:'POST',
+                body: JSON.stringify({                    
+                    label: response.labels[0],
+                    send: "history"
+                }),
+                headers: {
+                    'Content-Type':'application/json'
+                },
+            }).then(r=> r.json());            
+
+            if (historyRes.error) {                
+                setHistory('Unfortunately OpenAI APIs are not responding. Try again later!')
+            }
+            else {                                  
+                setHistory(historyRes.result.content) 
+            }
+        
+            // set loading false
+            setHistoryLoading(false);        
+
+            // // Make call for Recipe
+            const recipeRes = await fetch('/api/detail', {
+                method:'POST',
+                body: JSON.stringify({                  
+                    label: response.labels[0],
+                    send: "recipe"
+                }),
+                headers: {
+                    'Content-Type':'application/json'
+                },
+            }).then(r=> r.json());
+           
+            if (recipeRes.error) {                
+                setRecipe('Unfortunately OpenAI APIs are not responding. Try again later!')
+            }
+            else {            
+                setRecipe(recipeRes.result.content) 
+            }
+
+            setRecipeLoading(false);
+
+        }        
+        
         setUploadFile();
     }
 
 
     return (                            
-            <section className="xl:col-span-2 p-8 sm:w-full bg-gray-800 rounded-xl shadow-lg flex flex-col justify-center gap-2 xl:h-[70vh]">            
+            <section className="p-8 sm:w-full bg-gray-800 rounded-xl shadow-lg flex flex-col justify-center gap-2 xl:h-[70vh]">            
                 <form method="post" onChange={handleOnChange} onSubmit={handleOnSubmit}>    
                 <div className="flex justify-center items-start h-[50vh]">
                 {
