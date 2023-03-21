@@ -3,6 +3,11 @@ Wikifoodia is an image classification app for 101 dishes demonstrating the power
 
 This app is using all of the data from the [Food101 dataset provided by tensorflow dataset](https://www.tensorflow.org/datasets/catalog/food101) of Image Classification.
 
+
+## Demo 
+
+https://user-images.githubusercontent.com/29537875/226509859-abd1e3f4-a287-48f2-91e8-189716af5442.mp4
+
 ## Project Tree
 
 ```bash
