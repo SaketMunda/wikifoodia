@@ -1,5 +1,5 @@
 # Wikifoodia
-Wikifoodia is an image classification app for 101 dishes demonstrating the power of transfer learning.
+Wikifoodia is an image classification app for 101 dishes demonstrating the power of transfer learning and after predicting the label it also generates the recipe and history of that predicted label using [ChatGPT API](https://platform.openai.com/docs/api-reference/chat).
 
 This app is using all of the data from the [Food101 dataset provided by tensorflow dataset](https://www.tensorflow.org/datasets/catalog/food101) of Image Classification.
 
